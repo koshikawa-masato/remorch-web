@@ -331,11 +331,16 @@
 
     // Main
     function init() {
-      const hash = window.location.hash.slice(1);
+      let hash = window.location.hash.slice(1);
 
       if (!hash) {
         showLanding();
         return;
+      }
+
+      // Strip remorch:// prefix if present
+      if (hash.startsWith('remorch://')) {
+        hash = hash.replace('remorch://', '');
       }
 
       const data = parseConnectionData(hash);
@@ -344,7 +349,9 @@
         return;
       }
 
-      showQR(hash, data);
+      // For QR code, use remorch:// URL scheme
+      const qrData = 'remorch://' + hash;
+      showQR(qrData, data);
     }
 
     init();
